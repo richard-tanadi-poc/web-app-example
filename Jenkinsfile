@@ -6,8 +6,8 @@ pipeline {
             steps {
                 script{
                     echo 'Checkout from Github'
-                },
-                git branch: 'main', url: 'https://github.com/richard-tanadi-poc/web-app-example.git',
+                }
+                git branch: 'main', url: 'https://github.com/richard-tanadi-poc/web-app-example.git'
                 script{
                     env.BUILD_NUMBER = 1
                     echo gitVars.GIT_PREVIOUS_SUCCESSFUL_COMMIT}
