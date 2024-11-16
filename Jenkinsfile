@@ -19,7 +19,8 @@ pipeline {
             steps {
                 script {
                     def apiDockerfile = 'api/Dockerfile'
-                    docker.build "myproject/api:${env.BUILD_NUMBER}", "-f ${apiDockerfile}"
+                    def IMAGE_NAME = "${REPO_LOCATION}-docker.pkg.dev/${GCP_PROJECT}/${GCP_REPO_NAME}/garden-app-backend"
+                    docker.build "${IMAGE_NAME}:${env.BUILD_NUMBER}", "-f ${apiDockerfile} ."
                 }
             }
         }
@@ -28,7 +29,8 @@ pipeline {
             steps {
                 script {
                     def webDockerfile = 'web/Dockerfile'
-                    docker.build "myproject/web:${env.BUILD_NUMBER}", "-f ${webDockerfile}"
+                    def IMAGE_NAME = "${REPO_LOCATION}-docker.pkg.dev/${GCP_PROJECT}/${GCP_REPO_NAME}/garden-app-frontend"
+                    docker.build "${IMAGE_NAME}:${env.BUILD_NUMBER}", "-f ${apiDockerfile} ."
                 }
             }
         }
@@ -36,7 +38,7 @@ pipeline {
         stage('Push Back-End Image') {
             steps {
                 script {
-                    IMAGE_NAME = "${REPO_LOCATION}-docker.pkg.dev/${GCP_PROJECT}/${GCP_REPO_NAME}/garden-app-backend"
+                    def IMAGE_NAME = "${REPO_LOCATION}-docker.pkg.dev/${GCP_PROJECT}/${GCP_REPO_NAME}/garden-app-backend"
                     docker.withRegistry("https://${REPO_LOCATION}-docker.pkg.dev", '319c0a98-40b7-451e-91fb-7b206f917664') {
                         docker.image("${IMAGE_NAME}:${env.BUILD_NUMBER}").push()
                     }
@@ -47,7 +49,7 @@ pipeline {
         stage('Push Front-End Image') {
             steps {
                 script {
-                    IMAGE_NAME = "${REPO_LOCATION}-docker.pkg.dev/${GCP_PROJECT}/${GCP_REPO_NAME}/garden-app-frontend"
+                    def IMAGE_NAME = "${REPO_LOCATION}-docker.pkg.dev/${GCP_PROJECT}/${GCP_REPO_NAME}/garden-app-frontend"
                     docker.withRegistry("https://${REPO_LOCATION}-docker.pkg.dev", '319c0a98-40b7-451e-91fb-7b206f917664') {
                         docker.image("${IMAGE_NAME}:${env.BUILD_NUMBER}").push()
                     }
