@@ -39,7 +39,7 @@ pipeline {
             steps {
                 script {
                     def IMAGE_NAME = "https://${REPO_LOCATION}-docker.pkg.dev/${GCP_PROJECT}/${GCP_REPO_NAME}/garden-app-backend"
-                    docker.withRegistry("https://${REPO_LOCATION}-docker.pkg.dev", '319c0a98-40b7-451e-91fb-7b206f917664') {
+                    docker.withRegistry("https://${REPO_LOCATION}-docker.pkg.dev") {
                         docker.image("${IMAGE_NAME}:${env.BUILD_NUMBER}").push()
                     }
                 }
@@ -50,7 +50,7 @@ pipeline {
             steps {
                 script {
                     def IMAGE_NAME = "https://${REPO_LOCATION}-docker.pkg.dev/${GCP_PROJECT}/${GCP_REPO_NAME}/garden-app-frontend"
-                    docker.withRegistry("https://${REPO_LOCATION}-docker.pkg.dev", '319c0a98-40b7-451e-91fb-7b206f917664') {
+                    docker.withRegistry("https://${REPO_LOCATION}-docker.pkg.dev") {
                         docker.image("${IMAGE_NAME}:${env.BUILD_NUMBER}").push()
                     }
                 }
