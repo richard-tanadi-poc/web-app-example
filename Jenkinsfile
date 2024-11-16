@@ -9,7 +9,8 @@ pipeline {
                 }
                 git branch: 'main', url: 'https://github.com/richard-tanadi-poc/web-app-example.git'
                 script{
-                    env.BUILD_NUMBER = 1
+                    def gitVars = checkout([$class: 'GitSCM', branches: [[name: 'master']], userRemoteConfigs: [[url: 'https://github.com/richard-tanadi-poc/web-app-example.git']]])
+                    env.BUILD_NUMBER = gitVars.GIT_PREVIOUS_SUCCESSFUL_COMMIT
                     echo gitVars.GIT_PREVIOUS_SUCCESSFUL_COMMIT
                 }
             }
