@@ -1,22 +1,21 @@
 pipeline {
     agent any
+    environment {
+        GCP_PROJECT = 'poc-bjb-mlff'
+        REPO_LOCATION = 'asia-southeast2'
+        GCP_REPO_NAME = 'test-repo-bjb-application'
+
+    }
 
     stages {
         stage('Checkout') {
             steps {
-                script{
-                    echo 'Checkout from Github'
-                }
-                git branch: 'main', url: 'https://github.com/richard-tanadi-poc/web-app-example.git'
-                script{
-                    def gitVars = checkout([$class: 'GitSCM', branches: [[name: 'master']], userRemoteConfigs: [[url: 'https://github.com/richard-tanadi-poc/web-app-example.git']]])
-                    env.BUILD_NUMBER = gitVars.GIT_PREVIOUS_SUCCESSFUL_COMMIT
-                    echo gitVars.GIT_PREVIOUS_SUCCESSFUL_COMMIT
-                }
+               checkout scm
             }
+
         }
 
-        stage('Build API Image') {
+        stage('Build Back-End Image') {
             steps {
                 script {
                     def apiDockerfile = 'api/Dockerfile'
@@ -25,7 +24,7 @@ pipeline {
             }
         }
 
-        stage('Build Web Image') {
+        stage('Build Front-End Image') {
             steps {
                 script {
                     def webDockerfile = 'web/Dockerfile'
@@ -34,21 +33,23 @@ pipeline {
             }
         }
 
-        stage('Push API Image') {
+        stage('Push Back-End Image') {
             steps {
                 script {
-                    docker.withRegistry('https://your-docker-registry.com', 'dockerhub-credentials') {
-                        docker.image("myproject/api:${env.BUILD_NUMBER}").push()
+                    IMAGE_NAME = "${REPO_LOCATION}-docker.pkg.dev/${GCP_PROJECT}/${GCP_REPO_NAME}/garden-app-backend"
+                    docker.withRegistry("https://${REPO_LOCATION}-docker.pkg.dev", '319c0a98-40b7-451e-91fb-7b206f917664') {
+                        docker.image("${IMAGE_NAME}:${env.BUILD_NUMBER}").push()
                     }
                 }
             }
         }
 
-        stage('Push Web Image') {
+        stage('Push Front-End Image') {
             steps {
                 script {
-                    docker.withRegistry('https://your-docker-registry.com', 'dockerhub-credentials') {
-                        docker.image("myproject/web:${env.BUILD_NUMBER}").push()
+                    IMAGE_NAME = "${REPO_LOCATION}-docker.pkg.dev/${GCP_PROJECT}/${GCP_REPO_NAME}/garden-app-frontend"
+                    docker.withRegistry("https://${REPO_LOCATION}-docker.pkg.dev", '319c0a98-40b7-451e-91fb-7b206f917664') {
+                        docker.image("${IMAGE_NAME}:${env.BUILD_NUMBER}").push()
                     }
                 }
             }
