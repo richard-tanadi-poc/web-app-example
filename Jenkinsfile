@@ -51,6 +51,8 @@ pipeline {
                 script {
                     def IMAGE_NAME = "https://${REPO_LOCATION}-docker.pkg.dev/${GCP_PROJECT}/${GCP_REPO_NAME}/garden-app-frontend"
                     docker.withRegistry("https://${REPO_LOCATION}-docker.pkg.dev") {
+                        sh("gcloud auth activate-service-account --key-file=${GC_KEY}")
+                        sh("gcloud container clusters get-credentials prod --zone northamerica-northeast1-a --project ${project}")
                         docker.image("${IMAGE_NAME}:${env.BUILD_NUMBER}").push()
                     }
                 }
