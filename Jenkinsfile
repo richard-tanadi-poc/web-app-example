@@ -40,7 +40,6 @@ pipeline {
                 script {
                     def IMAGE_NAME = "${REPO_LOCATION}-docker.pkg.dev/${GCP_PROJECT}/${GCP_REPO_NAME}/garden-app-backend"
                     docker.image("${IMAGE_NAME}:${env.BUILD_NUMBER}").push()
-                    }
                 }
             }
         }
