@@ -40,7 +40,9 @@ pipeline {
                 script {
                     def IMAGE_NAME = "${REPO_LOCATION}-docker.pkg.dev/${GCP_PROJECT}/${GCP_REPO_NAME}/garden-app-backend"
                     withCredentials([file(credentialsId: '319c0a98-40b7-451e-91fb-7b206f917664', variable: 'GOOGLE_APPLICATION_CREDENTIALS')]) {
-                        docker.image("${IMAGE_NAME}:${env.BUILD_NUMBER}").push()
+                        sh 'cat "${GOOGLE_APPLICATION_CREDENTIALS}" | docker login -u _json_key_base64 --password-stdin https://"${REPO_LOCATION}"-docker.pkg.dev'
+                        sh 'docker push ${IMAGE_NAME}:${env.BUILD_NUMBER}'
+                        sh 'docker logout https://"${REPO_LOCATION}"-docker.pkg.dev'
                     }
                 }
             }
