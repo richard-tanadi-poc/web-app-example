@@ -44,19 +44,19 @@ export default {
     };
 
     window.axios.get('/api/vote', { headers }).then((res) => {
-      console.log("Got votes from API", res)
+      console.log('Got votes from API', res)
 
       const data = res.data;
       const votesByOption = res.data.reduce((acc, curr) => {
-        const [option, nVotes] = curr
-        acc[option] = nVotes
-        return acc
-      }, {})
+        const [option, nVotes] = curr ;
+        acc[option] = nVotes ;
+        return acc ;
+      }, {}) ;
 
-      console.log("Results:", votesByOption)
+      console.log('Results:', votesByOption) ;
 
-      const a = parseInt(votesByOption.a || 0, 10)
-      const b = parseInt(votesByOption.b || 0, 10)
+      const a = parseInt(votesByOption.a || 0, 10) ;
+      const b = parseInt(votesByOption.b || 0, 10) ;
 
       this.updateScores({ a, b });
     });
@@ -71,15 +71,15 @@ export default {
       }
     },
     vote(v) {
-      console.log(`Voting for ${v}`)
+      console.log(`Voting for ${v}`);
       const headers = {
         'Content-Type': 'application/x-www-form-urlencoded',
         'Access-Control-Allow-Origin': '*',
       };
       const self = this;
       window.axios.post('/api/vote', `vote=${v}`, { headers }).then(() => {
-        this.results[v]++
-        console.log(`Did cast vote`)
+        this.results[v]++;
+        console.log('Did cast vote');
       });
     },
   },
