@@ -39,7 +39,9 @@ pipeline {
             steps {
                 script {
                     def IMAGE_NAME = "${REPO_LOCATION}-docker.pkg.dev/${GCP_PROJECT}/${GCP_REPO_NAME}/garden-app-backend"
-                    docker.image("${IMAGE_NAME}:${env.BUILD_NUMBER}").push()
+                    withCredentials([file(credentialsId: '319c0a98-40b7-451e-91fb-7b206f917664', variable: 'poc-bjb-mlff-a2258f0fcc13.json')]) {
+                        docker.image("${IMAGE_NAME}:${env.BUILD_NUMBER}").push()
+                    }
                 }
             }
         }
