@@ -39,7 +39,7 @@ pipeline {
             steps {
                 script {
                     def IMAGE_NAME = "${REPO_LOCATION}-docker.pkg.dev/${GCP_PROJECT}/${GCP_REPO_NAME}/garden-app-backend"
-                    withCredentials([usernamePassword, credentialsId: '580f7131-c443-495c-9eec-ad1f6a40a024', variable: 'GOOGLE_CREDENTIALS']) {
+                    withCredentials([file(credentialsId: 'poc-bjb-mlff-a2258f0fcc13.json', variable: 'GOOGLE_APPLICATION_CREDENTIALS')]) {
                         docker.image("${IMAGE_NAME}:${env.BUILD_NUMBER}").push()
                     }
                 }
