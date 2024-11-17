@@ -44,10 +44,18 @@ pipeline {
                     def IMAGE_NAME = "${REPO_LOCATION}-docker.pkg.dev/${GCP_PROJECT}/${GCP_REPO_NAME}/garden-app-backend"
                     withCredentials([file(credentialsId: '684c7ec8-6a67-4fb4-9802-f9112e83a819', variable: 'GOOGLE_APPLICATION_CREDENTIALS')]) {
                         sh 'gcloud container clusters get-credentials mlff-dev-cluster-1 --zone asia-southeast2-a'
-                        sh 'kubectl delete deployments api'
-                        sh 'kubectl delete services api'
-                        sh 'kubectl apply -f api/manifests/deployment.yaml'
-                        sh 'kubectl apply -f api/manifests/service.yaml'
+                        try{
+                            sh 'kubectl delete deployments api'
+                            sh 'kubectl delete services api'
+                        } catch (err) {
+                            echo "Failed: ${err}"
+                        } finally {
+                            sh 'kubectl apply -f api/manifests/deployment.yaml'
+                            sh 'kubectl apply -f api/manifests/service.yaml'
+                        }
+                        
+                        // sh 'kubectl apply -f api/manifests/deployment.yaml'
+                        // sh 'kubectl apply -f api/manifests/service.yaml'
                     }
                 }
             }
@@ -83,10 +91,15 @@ pipeline {
                     def IMAGE_NAME = "${REPO_LOCATION}-docker.pkg.dev/${GCP_PROJECT}/${GCP_REPO_NAME}/garden-app-frontend"
                     withCredentials([file(credentialsId: '684c7ec8-6a67-4fb4-9802-f9112e83a819', variable: 'GOOGLE_APPLICATION_CREDENTIALS')]) {
                         sh 'gcloud container clusters get-credentials mlff-dev-cluster-1 --zone asia-southeast2-a'
-                        sh 'kubectl delete deployments web'
-                        sh 'kubectl delete services web'
-                        sh 'kubectl apply -f web/manifests/deployment.yaml'
-                        sh 'kubectl apply -f web/manifests/service.yaml'
+                        try{
+                            sh 'kubectl delete deployments web'
+                            sh 'kubectl delete services web'
+                        } catch (err) {
+                            echo "Failed: ${err}"
+                        } finally {
+                            sh 'kubectl apply -f web/manifests/deployment.yaml'
+                            sh 'kubectl apply -f web/manifests/service.yaml'
+                        }
                     }
                 }
             }
