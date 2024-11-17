@@ -1,15 +1,10 @@
 pipeline {
-    agent {
-        docker { 
-            image 'registry.hub.docker.com/google/cloud-sdk:alpine' 
-            args '-v $HOME:/home -w /home'    
-        }
-    }
+    agent any
     environment {
         GCP_PROJECT = 'poc-bjb-mlff'
         REPO_LOCATION = 'asia-southeast2'
         GCP_REPO_NAME = 'mlff-poc-demo-app'
-
+        GCP_CREDENTIALS_ID = '580f7131-c443-495c-9eec-ad1f6a40a024'
     }
 
     stages {
@@ -43,18 +38,16 @@ pipeline {
             }
         }
 
-        stage('Deploy Back-End'){
+        stage('Deploy Back-End to GKE') {
             steps{
-                script{
-                    def IMAGE_NAME = "${REPO_LOCATION}-docker.pkg.dev/${GCP_PROJECT}/${GCP_REPO_NAME}/garden-app-backend"
-                    withCredentials([file(credentialsId: '319c0a98-40b7-451e-91fb-7b206f917664', variable: 'GOOGLE_APPLICATION_CREDENTIALS')]) {
-                        sh 'gcloud container clusters get-credentials mlff-dev-cluster-1 --zone asia-southeast2-a --project poc-bjb-mlff'
-                        sh 'kubectl delete deployments api'
-                        sh 'kubectl delete services api'
-                        sh 'kubectl apply -f api/manifests/deployment.yaml'
-                        sh 'kubectl apply -f api/manifests/service.yaml'
-                    }   
-                }
+                step([
+                $class: 'KubernetesEngineBuilder',
+                projectId: env.GCP_PROJECT,
+                clusterName: 'mlff-dev-cluster-1',
+                location: 'asia-southeast2-a',
+                manifestPattern: 'api/manifests',
+                credentialsId: env.GCP_CREDENTIALS_ID,
+                verifyDeployments: true])
             }
         }
 
