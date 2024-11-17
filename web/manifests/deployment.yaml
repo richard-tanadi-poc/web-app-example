@@ -12,6 +12,8 @@ spec:
       labels:
         app: web
     spec:
+      nodeSelector:
+        cloud.google.com/gke-nodepool: "app-fe-dev-node-pool-1"
       containers:
       - name: web
         image: asia-southeast2-docker.pkg.dev/poc-bjb-mlff/mlff-poc-demo-app/garden-app-frontend:latest
