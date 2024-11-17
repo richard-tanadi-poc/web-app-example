@@ -1,5 +1,10 @@
 pipeline {
-    agent any
+    agent {
+        docker { 
+            image 'registry.hub.docker.com/google/cloud-sdk:alpine' 
+            args '-v $HOME:/home -w /home'    
+        }
+    }
     environment {
         GCP_PROJECT = 'poc-bjb-mlff'
         REPO_LOCATION = 'asia-southeast2'
