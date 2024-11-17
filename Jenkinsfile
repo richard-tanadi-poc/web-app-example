@@ -43,6 +43,7 @@ pipeline {
                 script {
                     def IMAGE_NAME = "${REPO_LOCATION}-docker.pkg.dev/${GCP_PROJECT}/${GCP_REPO_NAME}/garden-app-backend"
                     withCredentials([file(credentialsId: 'b121e9d7-f634-4410-8fb4-8e8b83dd327a', variable: 'GOOGLE_APPLICATION_CREDENTIALS')]) {
+                        sh "gcloud auth activate-service-account --keyfile=${GOOGLE_APPLICATION_CREDENTIALS}"
                         sh 'gcloud container clusters get-credentials mlff-dev-cluster-1 --zone asia-southeast2-a'
                         sh 'kubectl delete deployments api'
                         sh 'kubectl delete services api'
@@ -82,6 +83,7 @@ pipeline {
                 script {
                     def IMAGE_NAME = "${REPO_LOCATION}-docker.pkg.dev/${GCP_PROJECT}/${GCP_REPO_NAME}/garden-app-frontend"
                     withCredentials([file(credentialsId: 'b121e9d7-f634-4410-8fb4-8e8b83dd327a', variable: 'GOOGLE_APPLICATION_CREDENTIALS')]) {
+                        sh "gcloud auth activate-service-account --keyfile=${GOOGLE_APPLICATION_CREDENTIALS}"
                         sh 'gcloud container clusters get-credentials mlff-dev-cluster-1 --zone asia-southeast2-a'
                         sh 'kubectl delete deployments web'
                         sh 'kubectl delete services web'
