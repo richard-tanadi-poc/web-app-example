@@ -17,10 +17,6 @@ spec:
         image: asia-southeast2-docker.pkg.dev/poc-bjb-mlff/mlff-poc-demo-app/garden-app-frontend:latest
         imagePullPolicy: IfNotPresent
         env:
-          - name: HOSTNAME
-            value: "web.${providers.ephemeral-kubernetes.outputs.default-hostname}"
-          - name: VUE_APP_USERNAME
-            value: ${local.username}
         livenessProbe:
           failureThreshold: 3
           httpGet:
