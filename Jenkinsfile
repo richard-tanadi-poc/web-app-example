@@ -38,18 +38,18 @@ pipeline {
             }
         }
 
-        stage('Deploy Back-End to GKE') {
-            steps{
-                step([
-                $class: 'KubernetesEngineBuilder',
-                projectId: env.GCP_PROJECT,
-                clusterName: 'mlff-dev-cluster-1',
-                location: 'asia-southeast2-a',
-                manifestPattern: 'api/manifests',
-                credentialsId: env.GCP_CREDENTIALS_ID,
-                verifyDeployments: true])
-            }
-        }
+        // stage('Deploy Back-End to GKE') {
+        //     steps{
+        //         step([
+        //         $class: 'KubernetesEngineBuilder',
+        //         projectId: env.GCP_PROJECT,
+        //         clusterName: 'mlff-dev-cluster-1',
+        //         location: 'asia-southeast2-a',
+        //         manifestPattern: 'api/manifests',
+        //         credentialsId: env.GCP_CREDENTIALS_ID,
+        //         verifyDeployments: true])
+        //     }
+        // }
 
         stage('Build Front-End Image') {
             steps {
