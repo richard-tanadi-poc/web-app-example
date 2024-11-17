@@ -15,7 +15,7 @@ log.setLevel(logging.ERROR)
 
 option_a = os.getenv('OPTION_A', "Cats")
 option_b = os.getenv('OPTION_B', "Dogs")
-db_hostname = 'postgres'
+db_host = os.getenv('PGHOST')
 db_database = os.getenv('PGDATABASE')
 db_password = os.getenv('PGPASSWORD')
 db_user = os.getenv('PGUSER')
@@ -43,7 +43,7 @@ def hello():
 def get_votes():
     print("Getting votes")
 
-    conn = psycopg2.connect( host=db_hostname, user=db_user, password=db_password, dbname=db_database)
+    conn = psycopg2.connect( host=db_host, user=db_user, password=db_password, dbname=db_database)
     cur = conn.cursor()
     cur.execute("SELECT vote, COUNT(id) AS count FROM votes GROUP BY vote")
     res = cur.fetchall()
@@ -67,7 +67,7 @@ def post_vote():
         print("received vote request for '%s' from voter id: '%s'" % (vote, voter_id))
         sys.stdout.flush()
 
-        conn = psycopg2.connect( host=db_hostname, user=db_user, password=db_password, dbname=db_database)
+        conn = psycopg2.connect( host=db_host, user=db_user, password=db_password, dbname=db_database)
         query = "INSERT INTO votes (id, vote, created_at) VALUES (%s, %s, NOW())"
         queryParams = (voter_id, vote)
         cur = conn.cursor()

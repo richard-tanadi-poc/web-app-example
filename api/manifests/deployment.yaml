@@ -16,18 +16,17 @@ spec:
     spec:
       containers:
       - name: api
-        image: ${actions.build.api.outputs.deploymentImageId}
+        image: asia-southeast2-docker.pkg.dev/poc-bjb-mlff/test-repo-bjb-application/garden-app-backend:32
         imagePullPolicy: IfNotPresent
-        args:
-        - python
-        - app.py
         env:
         - name: PGDATABASE
-          value: postgres
+          value: richard
         - name: PGUSER
-          value: postgres
+          value: richard
         - name: PGPASSWORD
-          value: postgres
+          value: mysecretpassword
+        - name: PGHOST
+          value: 0.0.0.0
         ports:
         - containerPort: 8080
           name: http
@@ -59,5 +58,7 @@ spec:
           requests:
             cpu: 10m
             memory: 90Mi
+        nodeSelector:
+          cloud.google.com/gke-nodepool: "app-be-dev-node-pool-1"
         securityContext:
           allowPrivilegeEscalation: false

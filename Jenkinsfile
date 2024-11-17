@@ -3,7 +3,7 @@ pipeline {
     environment {
         GCP_PROJECT = 'poc-bjb-mlff'
         REPO_LOCATION = 'asia-southeast2'
-        GCP_REPO_NAME = 'test-repo-bjb-application'
+        GCP_REPO_NAME = 'mlff-poc-demo-app'
 
     }
 
