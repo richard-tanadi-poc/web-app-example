@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: web
-        image: ${actions.build.web.outputs.deploymentImageId}
+        image: asia-southeast2-docker.pkg.dev/poc-bjb-mlff/mlff-poc-demo-app/garden-app-frontend:latest
         imagePullPolicy: IfNotPresent
         env:
           - name: HOSTNAME

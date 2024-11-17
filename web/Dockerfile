@@ -5,6 +5,6 @@ WORKDIR /app
 COPY /web/package.json /web/package-lock.json /app/
 
 RUN npm install
-COPY . /app
+COPY ./web /app
 
-CMD ["npm", "run", "serve"]
+CMD ["npm", "run", "serve","fix"]
