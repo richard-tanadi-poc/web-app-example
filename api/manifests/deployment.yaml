@@ -14,9 +14,11 @@ spec:
       labels:
         app: api
     spec:
+      nodeSelector:
+        cloud.google.com/gke-nodepool: "app-be-dev-node-pool-1"
       containers:
       - name: api
-        image: asia-southeast2-docker.pkg.dev/poc-bjb-mlff/test-repo-bjb-application/garden-app-backend:32
+        image: asia-southeast2-docker.pkg.dev/poc-bjb-mlff/mlff-poc-demo-app/garden-app-backend:latest
         imagePullPolicy: IfNotPresent
         env:
         - name: PGDATABASE
@@ -26,7 +28,7 @@ spec:
         - name: PGPASSWORD
           value: mysecretpassword
         - name: PGHOST
-          value: 0.0.0.0
+          value: 34.101.84.168
         ports:
         - containerPort: 8080
           name: http
@@ -58,7 +60,5 @@ spec:
           requests:
             cpu: 10m
             memory: 90Mi
-        nodeSelector:
-          cloud.google.com/gke-nodepool: "app-be-dev-node-pool-1"
         securityContext:
           allowPrivilegeEscalation: false
