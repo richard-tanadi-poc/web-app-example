@@ -28,7 +28,7 @@ spec:
         - name: PGPASSWORD
           value: mysecretpassword
         - name: PGHOST
-          value: /cloudsql/poc-mlff-app:asia-southeast2:app-sql-instance
+          value: 10.45.97.3
         ports:
         - containerPort: 8080
           name: http

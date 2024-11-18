@@ -43,7 +43,7 @@ def hello():
 def get_votes():
     print("Getting votes")
 
-    conn = psycopg2.connect( host=db_host, user=db_user, password=db_password, dbname=db_database)
+    conn = psycopg2.connect( host=db_host, user=db_user, password=db_password, dbname=db_database, port=5432)
     cur = conn.cursor()
     cur.execute("SELECT vote, COUNT(id) AS count FROM public.votes GROUP BY vote")
     res = cur.fetchall()
@@ -67,7 +67,7 @@ def post_vote():
         print("received vote request for '%s' from voter id: '%s'" % (vote, voter_id))
         sys.stdout.flush()
 
-        conn = psycopg2.connect( host=db_host, user=db_user, password=db_password, dbname=db_database)
+        conn = psycopg2.connect( host=db_host, user=db_user, password=db_password, dbname=db_database, port=5432)
         query = "INSERT INTO public.votes (id, vote, created_at) VALUES (%s, %s, NOW())"
         queryParams = (voter_id, vote)
         cur = conn.cursor()
