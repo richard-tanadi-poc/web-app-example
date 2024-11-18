@@ -22,15 +22,15 @@ const results = {
   props: {
     optionA: {
       name: String,
-      color: String,
+      color: String
     },
     optionB: {
       name: String,
-      color: String,
+      color: String
     },
     results: {
-      a: Number, 
-      b: Number,
+      a: Number,
+      b: Number
     }
   },
 
