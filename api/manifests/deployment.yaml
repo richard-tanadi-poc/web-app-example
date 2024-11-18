@@ -22,11 +22,11 @@ spec:
         imagePullPolicy: IfNotPresent
         env:
         - name: PGDATABASE
-          value: richard
+          value: postgres
         - name: PGUSER
-          value: richard
+          value: testapp
         - name: PGPASSWORD
-          value: mysecretpassword
+          value: 9/]C;Z]r5x_-gRb1
         - name: PGHOST
           value: 10.45.97.3
         ports:
