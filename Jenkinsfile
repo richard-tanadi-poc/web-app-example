@@ -67,7 +67,6 @@ pipeline {
             }
         }
 
-
         stage('Push Front-End Image') {
             steps {
                 script {
