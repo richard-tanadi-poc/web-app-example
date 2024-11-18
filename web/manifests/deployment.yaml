@@ -16,7 +16,7 @@ spec:
         cloud.google.com/gke-nodepool: "app-fe-dev-node-pool-1"
       containers:
       - name: web
-        image: asia-southeast2-docker.pkg.dev/poc-bjb-mlff/mlff-poc-demo-app/garden-app-frontend:latest
+        image: asia-southeast2-docker.pkg.dev/poc-mlff-app/mlff-poc-demo-app/garden-app-frontend:latest
         imagePullPolicy: IfNotPresent
         env:
         livenessProbe:
