@@ -1,10 +1,9 @@
 pipeline {
     agent any
     environment {
-        GCP_PROJECT = 'poc-bjb-mlff'
+        GCP_PROJECT = 'poc-mlff-app'
         REPO_LOCATION = 'asia-southeast2'
         GCP_REPO_NAME = 'mlff-poc-demo-app'
-        GCP_CREDENTIALS_ID = '580f7131-c443-495c-9eec-ad1f6a40a024'
     }
 
     stages {
@@ -29,7 +28,7 @@ pipeline {
             steps {
                 script {
                     def IMAGE_NAME = "${REPO_LOCATION}-docker.pkg.dev/${GCP_PROJECT}/${GCP_REPO_NAME}/garden-app-backend"
-                    withCredentials([file(credentialsId: '684c7ec8-6a67-4fb4-9802-f9112e83a819', variable: 'GOOGLE_APPLICATION_CREDENTIALS')]) {
+                    withCredentials([file(credentialsId: '6ce76586-2627-4c12-9175-330a8a74c6a7', variable: 'GOOGLE_APPLICATION_CREDENTIALS')]) {
                         sh 'cat "${GOOGLE_APPLICATION_CREDENTIALS}" | docker login -u _json_key --password-stdin https://"${REPO_LOCATION}"-docker.pkg.dev'
                         sh "docker push ${IMAGE_NAME}:latest"
                         sh 'docker logout https://"${REPO_LOCATION}"-docker.pkg.dev'
@@ -42,7 +41,7 @@ pipeline {
             steps {
                 script {
                     def IMAGE_NAME = "${REPO_LOCATION}-docker.pkg.dev/${GCP_PROJECT}/${GCP_REPO_NAME}/garden-app-backend"
-                    withCredentials([file(credentialsId: '684c7ec8-6a67-4fb4-9802-f9112e83a819', variable: 'GOOGLE_APPLICATION_CREDENTIALS')]) {
+                    withCredentials([file(credentialsId: '6ce76586-2627-4c12-9175-330a8a74c6a7', variable: 'GOOGLE_APPLICATION_CREDENTIALS')]) {
                         sh 'gcloud container clusters get-credentials mlff-dev-cluster-1 --zone asia-southeast2-a'
                         try{
                             sh 'kubectl delete deployments api'
@@ -53,9 +52,6 @@ pipeline {
                             sh 'kubectl apply -f api/manifests/deployment.yaml'
                             sh 'kubectl apply -f api/manifests/service.yaml'
                         }
-                        
-                        // sh 'kubectl apply -f api/manifests/deployment.yaml'
-                        // sh 'kubectl apply -f api/manifests/service.yaml'
                     }
                 }
             }
@@ -76,7 +72,7 @@ pipeline {
             steps {
                 script {
                     def IMAGE_NAME = "${REPO_LOCATION}-docker.pkg.dev/${GCP_PROJECT}/${GCP_REPO_NAME}/garden-app-frontend"
-                    withCredentials([file(credentialsId: '684c7ec8-6a67-4fb4-9802-f9112e83a819', variable: 'GOOGLE_APPLICATION_CREDENTIALS')]) {
+                    withCredentials([file(credentialsId: '6ce76586-2627-4c12-9175-330a8a74c6a7', variable: 'GOOGLE_APPLICATION_CREDENTIALS')]) {
                         sh 'cat "${GOOGLE_APPLICATION_CREDENTIALS}" | docker login -u _json_key --password-stdin https://"${REPO_LOCATION}"-docker.pkg.dev'
                         sh "docker push ${IMAGE_NAME}:latest"
                         sh 'docker logout https://"${REPO_LOCATION}"-docker.pkg.dev'
@@ -85,25 +81,6 @@ pipeline {
             }
         }
 
-        stage('Deploy Front-End Image') {
-            steps {
-                script {
-                    def IMAGE_NAME = "${REPO_LOCATION}-docker.pkg.dev/${GCP_PROJECT}/${GCP_REPO_NAME}/garden-app-frontend"
-                    withCredentials([file(credentialsId: '684c7ec8-6a67-4fb4-9802-f9112e83a819', variable: 'GOOGLE_APPLICATION_CREDENTIALS')]) {
-                        sh 'gcloud container clusters get-credentials mlff-dev-cluster-1 --zone asia-southeast2-a'
-                        try{
-                            sh 'kubectl delete deployments web'
-                            sh 'kubectl delete services web'
-                        } catch (err) {
-                            echo "Failed: ${err}"
-                        } finally {
-                            sh 'kubectl apply -f web/manifests/deployment.yaml'
-                            sh 'kubectl apply -f web/manifests/service.yaml'
-                        }
-                    }
-                }
-            }
-        }
     }
 
     post {
