@@ -45,7 +45,7 @@ pipeline {
                         sh 'gcloud container clusters get-credentials mlff-dev-cluster-1 --zone asia-southeast2-a'
                         try{
                             sh 'kubectl delete deployments api'
-                            sh 'kubectl delete services api'
+                            sh 'kubectl delete services api-loadbalancer'
                         } catch (err) {
                             echo "Failed: ${err}"
                         } finally {
