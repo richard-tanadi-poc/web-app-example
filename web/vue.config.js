@@ -12,5 +12,6 @@ module.exports = {
         secure: false,
         logLevel: 'debug',
       },
+    },
   },
-}
+};
