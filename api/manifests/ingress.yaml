@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: api-ingress
+  name: api-ingress2
 spec:
   # defaultBackend:
   #   service:
@@ -11,7 +11,7 @@ spec:
   rules:
     - http:
        paths:
-         - path: /api
+         - path: /api/vote
            pathType: ImplementationSpecific
            backend:
             service:
