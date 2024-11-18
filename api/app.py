@@ -45,7 +45,7 @@ def get_votes():
 
     conn = psycopg2.connect( host=db_host, user=db_user, password=db_password, dbname=db_database)
     cur = conn.cursor()
-    cur.execute("SELECT vote, COUNT(id) AS count FROM votes GROUP BY vote")
+    cur.execute("SELECT vote, COUNT(id) AS count FROM public.votes GROUP BY vote")
     res = cur.fetchall()
     cur.close()
     conn.close()
@@ -68,7 +68,7 @@ def post_vote():
         sys.stdout.flush()
 
         conn = psycopg2.connect( host=db_host, user=db_user, password=db_password, dbname=db_database)
-        query = "INSERT INTO votes (id, vote, created_at) VALUES (%s, %s, NOW())"
+        query = "INSERT INTO public.votes (id, vote, created_at) VALUES (%s, %s, NOW())"
         queryParams = (voter_id, vote)
         cur = conn.cursor()
         cur.execute(query, queryParams)
@@ -81,6 +81,7 @@ def post_vote():
             status=200,
             mimetype='application/json'
         )
+        
     else:
         print("received invalid request")
         sys.stdout.flush()
