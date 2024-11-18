@@ -77,7 +77,7 @@ export default {
         'Access-Control-Allow-Origin': '*',
       };
       const self = this;
-      window.axios.post('http:/192.168.1.242/api/vote', `vote=${v}`, { headers }).then(() => {
+      window.axios.post('http://192.168.1.242/api/vote', `vote=${v}`, { headers }).then(() => {
         this.results[v]++;
         console.log('Did cast vote');
       });
